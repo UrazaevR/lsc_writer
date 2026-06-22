@@ -29,7 +29,7 @@ def get_all_data(default_file='default.json', data_file='data.json') -> dict:
 
 def touppercase(data: dict) -> dict:
     '''Возвращает словарь с приведенными к верхнему регистру значениями'''
-    white_list = ['GL_118', 'GL_163', 'Prefix', 'GL_110', 'GL_111', 'GL_112', 'GL_137', 'GL_116', 'GL_117', 'GL_117', 'GL_118', 'GL_317', 'GL_318', 'GL_160', 'GL_138', 'GL_141', 'GL-161']
+    white_list = ['GL_118', 'GL_163', 'Prefix', 'GL_110', 'GL_111', 'GL_112', 'GL_137', 'GL_116', 'GL_117', 'GL_117', 'GL_118', 'GL_317', 'GL_318', 'GL_160', 'GL_138', 'GL-161']
     answer = data.copy()
     for key in answer.keys():
         if isinstance(answer[key], str) and key in white_list:
