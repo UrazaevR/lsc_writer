@@ -159,7 +159,7 @@ class Cards_Writer:
         columns = [col for col in data_to_db.keys() if col in fields] # получаем список всех ключей, которые знаем и которые нужны для БД
         values = [data_to_db[key] for key in columns] # получаем значения для них
 
-        query = f'INSERT INTO CARDS ({', '.join(columns)}) VALUES ({", ".join(["?" for _ in values])}) RETURNING ID'
+        query = f'INSERT INTO CARDS ({", ".join(columns)}) VALUES ({", ".join(["?" for _ in values])}) RETURNING ID'
         id = cur.execute(query, tuple(values)).fetchone()[0] # вставляем данные в CARDS получаем id который присвоили карте
 
         query = f"INSERT INTO CARDSTATE (CARD_ID, DATE_CREATED, CREATED_BY) VALUES (?, datetime('now', 'localtime'), ?) RETURNING STATE_ID"
@@ -184,6 +184,7 @@ class Cards_Writer:
         cur.execute('UPDATE CARDSTATE SET MD5 = ? WHERE STATE_ID = ?', (md5, data['STATE_ID'],)) # записываем md5 файла в CARDSTATE по STATE_ID, который до этого сохраняли
         self.conn.commit()
         logging.info('MD5 записан, карта полностью создана\n' + '=' * 32)
+        return data['GL_105'] # номер карты, чтобы вызывающий код мог его сохранить
 
 
 if __name__ == '__main__':
@@ -221,7 +222,7 @@ if __name__ == '__main__':
         # это функция с основной магией, на вход получает словарь со всеми данными которые пишутся в карту
         # в данном случае передаю словарь собраный из двух json файлов функцией get_all_data()
         logging.info('Создание новой карты...')
-        writer.write_card(get_all_data())
-        print('ok')
+        card_num = writer.write_card(get_all_data())
+        print(f'ok:{card_num}')
     except Exception as ex:
         logging.error(f'Ошибка: {ex}')

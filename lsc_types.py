@@ -1,3 +1,4 @@
+from __future__ import annotations
 import datetime
 import hashlib
 from abc import ABC, abstractmethod
@@ -269,7 +270,7 @@ class Daktocard:
         header += int(7 + 1 + len(self.__dict__.keys())).to_bytes(4, 'little') # сколько всего ключей в файле
         header += int(0).to_bytes(4, 'little') # хз что это, но везде 0
         header += int(len(header) + 4 + len(body)).to_bytes(4, 'little') # общий размер файла
-        with open(file_folder + f'/{self.GL_105.value.rjust(19, '0')}.lsc', 'wb') as file:
+        with open(file_folder + f'/{self.GL_105.value.rjust(19, "0")}.lsc', 'wb') as file:
             file.write(header)
             file.write(body)
             md5 = hashlib.md5(header + body).hexdigest()
